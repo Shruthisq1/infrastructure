@@ -82,39 +82,3 @@ resource "aws_iam_instance_profile" "admin_profile" {
   role = aws_iam_role.bastion_role.name
 
 }
-module "s3_bucket" {
-  source = "terraform-aws-modules/s3-bucket/aws"
-
-  bucket = "terraform-s3"
-  acl    = "private"
-
-  control_object_ownership = true
-  object_ownership         = "ObjectWriter"
-
-  versioning = {
-    enabled = true
-  }
-
-  tags = {
-    Terraform   = "true"
-    Environment = "staging"
-  }
-}
-
-module "dynamodb_table" {
-  source = "terraform-aws-modules/dynamodb-table/aws"
-
-  name     = "terraform-locks"
-  hash_key = "LockID"
-
-  attributes = [
-    {
-      name = "LockID"
-      type = "S"
-    }
-  ]
-  tags = {
-    Terraform   = "true"
-    Environment = "staging"
-  }
-}
