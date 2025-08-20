@@ -1,6 +1,6 @@
 resource "aws_eks_access_entry" "bastion" {
   cluster_name  = aws_eks_cluster.cluster.name
-  principal_arn = "arn:aws:iam::213265226678:role/Bastion-role"
+  principal_arn = "arn:aws:iam::304140857279:role/Bastion-role"
   type          = "STANDARD"
 }
 
@@ -16,7 +16,7 @@ resource "aws_eks_access_policy_association" "bastion_admin" {
 
 resource "aws_eks_access_entry" "root_user" {
   cluster_name  = aws_eks_cluster.cluster.name
-  principal_arn = "arn:aws:iam::213265226678:root"
+  principal_arn = "arn:aws:iam::304140857279:root"
   type          = "STANDARD"
 }
 
