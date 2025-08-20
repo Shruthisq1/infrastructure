@@ -40,11 +40,11 @@ resource "aws_security_group" "bastion" {
 }
 
 resource "aws_instance" "bastion" {
-  ami                         = var.aws_ami
-  instance_type               = "c5.xlarge"
-  subnet_id                   = module.vpc.private_subnets[0]
-  vpc_security_group_ids      = [aws_security_group.bastion.id]
-  iam_instance_profile        = aws_iam_instance_profile.admin_profile.name
+  ami                    = var.aws_ami
+  instance_type          = "c5.xlarge"
+  subnet_id              = module.vpc.private_subnets[0]
+  vpc_security_group_ids = [aws_security_group.bastion.id]
+  iam_instance_profile   = aws_iam_instance_profile.admin_profile.name
 
   tags = {
     Name = "bastion"
@@ -80,5 +80,19 @@ resource "aws_iam_role_policy_attachment" "admin_access" {
 resource "aws_iam_instance_profile" "admin_profile" {
   name = "ec2-admin-profile"
   role = aws_iam_role.bastion_role.name
+}
 
+module "s3_bucket" {
+  source = "terraform-aws-modules/s3-bucket/aws"
+  version = "5.4.0"
+
+  bucket = "terraform-sq1-012"
+  acl    = "private"
+
+  control_object_ownership = true
+  object_ownership         = "ObjectWriter"
+
+  versioning = {
+    enabled = true
+  }
 }
