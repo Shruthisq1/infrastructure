@@ -1,7 +1,7 @@
 resource "aws_eks_cluster" "cluster" {
   name     = var.cluster_name
   role_arn = aws_iam_role.cluster.arn
-  version  = "1.33"
+  version  = "1.34"
 
   vpc_config {
     subnet_ids = concat(module.vpc.private_subnets, module.vpc.public_subnets)
@@ -109,4 +109,5 @@ resource "aws_security_group_rule" "allow_bastion_to_default_csg" {
   protocol                 = "tcp"
   security_group_id        = aws_eks_cluster.cluster.vpc_config[0].cluster_security_group_id
   source_security_group_id = aws_security_group.bastion.id
+
 }
